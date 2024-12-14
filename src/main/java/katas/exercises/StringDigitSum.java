@@ -9,7 +9,17 @@ public class StringDigitSum {
      * @return the sum of all digits in the string
      */
     public static int sumOfDigits(String input) {
-        return 0;
+        StringBuilder str = new StringBuilder(input);
+        int sum=0;
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if(c>='0' && c<='9'){
+                sum+=(int)c -'0';
+            }
+
+        }
+
+        return sum;
     }
 
     public static void main(String[] args) {
