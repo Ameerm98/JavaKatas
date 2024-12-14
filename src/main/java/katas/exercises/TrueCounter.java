@@ -9,7 +9,13 @@ public class TrueCounter {
      * @return the count of true values in the array
      */
     public static int countTrueValues(boolean[] array) {
-        return 0;
+        int count = 0;
+        for(boolean fl :array){
+           if(fl){
+               count+=1;
+           }
+        }
+        return count;
     }
 
     public static void main(String[] args) {
