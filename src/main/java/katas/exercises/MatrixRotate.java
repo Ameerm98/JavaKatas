@@ -1,5 +1,7 @@
 package katas.exercises;
 
+import java.util.ArrayList;
+
 public class MatrixRotate {
 
     /**
@@ -8,7 +10,23 @@ public class MatrixRotate {
      * @param matrix the 2D square matrix to rotate
      */
     public static void rotateMatrix(int[][] matrix) {
+        int len = matrix.length-1;
+        for (int i = 0; i < matrix.length/2; i++) {
+            int[] r1 = matrix[i];
+            int[] r2 = matrix[len-i];
+            matrix[len] = r1;
+            matrix[i] = r2;
+        }
 
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                if(i<j){
+                    int temp = matrix[j][i];
+                    matrix[j][i] =matrix[i][j];
+                    matrix[i][j] = temp;
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
