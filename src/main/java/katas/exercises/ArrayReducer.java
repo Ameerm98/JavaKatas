@@ -10,6 +10,9 @@ public class ArrayReducer {
      */
     public static void reduceArray(int[] numbers) {
 
+        for (int i = numbers.length-1; i >0; i--) {
+            numbers[i]-=numbers[i-1];
+        }
     }
 
     public static void main(String[] args) {
