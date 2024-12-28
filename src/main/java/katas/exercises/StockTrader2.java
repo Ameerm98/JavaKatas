@@ -11,12 +11,23 @@ public class StockTrader2 {
      * @return the maximum profit, or 0 if no profit can be achieved
      */
     public static int maxProfit(int[] prices) {
-        return 0;
+        int b = prices[0];
+        int maxprofit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i]>b){
+                maxprofit+=prices[i]-b;
+                b = prices[i];
+            }else {
+                b=prices[i];
+            }
+        }
+        return maxprofit;
     }
 
+
     public static void main(String[] args) {
-        int[] stockPrices = {7, 1, 5, 3, 6, 4};
+        int[] stockPrices = {7, 6, 5, 4, 3, 2};
         int profit = maxProfit(stockPrices);
-        System.out.println("Maximum Profit: " + profit);  // should be 7
+        System.out.println("Maximum Profit: " + profit);  // should be 0
     }
 }
