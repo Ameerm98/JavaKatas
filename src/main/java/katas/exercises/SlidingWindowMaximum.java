@@ -1,6 +1,6 @@
 package katas.exercises;
 
-import java.util.List;
+import java.util.*;
 
 public class SlidingWindowMaximum {
 
@@ -17,7 +17,37 @@ public class SlidingWindowMaximum {
      * @return a list of the maximum values in each window
      */
     public static List<Integer> maxSlidingWindow(int[] nums, int k) {
-        return null;
+
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+        Map<Integer,Integer> count=new HashMap<>();
+        for (int i = 0; i < k; i++) {
+            maxHeap.add(nums[i]);
+            if (count.containsKey(nums[i])){
+                count.put(nums[i],count.get(nums[i])+1);
+            }else {
+                count.put(nums[i],1);
+            }
+        }
+
+        List<Integer> res = new ArrayList<>();
+        res.add(maxHeap.peek());
+
+        for (int i = 1; i+k <= nums.length ; i++) {
+            if (count.get(nums[i-1])==1){
+                count.remove(nums[i-1]);
+                maxHeap.remove(nums[i-1]);
+            }else{
+                count.replace(nums[i],count.get(nums[i])-1);
+            }
+            if (count.containsKey(nums[i+k-1])){
+                count.replace(nums[i+k-1],count.get(nums[i+k-1])+1);
+            }else{
+                maxHeap.add(nums[i+k-1]);
+                count.put(nums[i+k-1],1);
+            }
+            res.add(maxHeap.peek());
+        }
+        return res;
     }
 
     public static void main(String[] args) {
