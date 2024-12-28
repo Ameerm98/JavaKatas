@@ -14,7 +14,42 @@ public class ValidParentheses {
      */
     public static boolean isValidParentheses(String s) {
         // Hint for efficient implementation: stack
-        return false;
+        int[] arr={0,0,0};
+        char[] str = s.toCharArray();
+        for (int i=0;i<s.length();i++){
+            if (str[i]=='('){
+                arr[0]+=1;
+            } else if (str[i]=='[') {
+                arr[1]+=1;
+            } else if (str[i]=='{') {
+                arr[2]+=1;
+            } else if (str[i]==')') {
+                if (arr[0]>0){
+                    arr[0]-=1;
+                }else {
+                    return false;
+                }
+            } else if (str[i]==']') {
+                if (arr[1]>0){
+                    arr[1]-=1;
+                }else {
+                    return false;
+                }
+            } else if (str[i]=='}') {
+                if (arr[2]>0){
+                    arr[2]-=1;
+                }else {
+                    return false;
+                }
+            }
+        }
+
+        for (int val:arr){
+            if (val!=0){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) {
