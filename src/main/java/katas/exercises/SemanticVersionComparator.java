@@ -10,7 +10,38 @@ public class SemanticVersionComparator {
      * @return -1 if version1 < version2, 1 if version1 > version2, 0 if they are equal
      */
     public static int compareVersions(String version1, String version2) {
+        int res =version1.compareTo(version2);
+        if(res>0){
+            return 1;
+        } else if (res<0) {
+            return -1;
+        }
         return 0;
+/*
+        if (v1[0].compareTo(v2[0])==1){
+            return 1;
+        } else if (v1[0].compareTo(v2[0])==-1) {
+            return -1;
+        }else {
+            if (v1[1].compareTo(v2[1])==1){
+                return 1;
+            } else if (v1[1].compareTo(v2[1])==-1) {
+                return -1;
+            }else {
+                if (v1[2].compareTo(v2[2])==1){
+                    return 1;
+                }else if (v1[2].compareTo(v2[2])==-1){
+                    return -1;
+                }else {
+                    return 0;
+                }
+            }
+        }
+
+
+ */
+
+
     }
 
     public static void main(String[] args) {
