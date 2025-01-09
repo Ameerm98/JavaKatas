@@ -10,6 +10,7 @@ public class CircularBuffer {
      */
 
     private int[] buffer;
+    private final int capacity;
     private int head;
     private int tail;
     private int size;
@@ -20,6 +21,14 @@ public class CircularBuffer {
      * @param capacity the maximum number of elements the buffer can hold
      */
     public CircularBuffer(int capacity) {
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Buffer capacity must be greater than 0");
+        }
+        this.capacity = capacity;
+        this.buffer = new int[capacity];
+        this.size =0;
+        this.head = 0;
+        this.tail = 0;
 
     }
 
@@ -29,7 +38,13 @@ public class CircularBuffer {
      * @param val the value to add
      */
     public void add(int val) {
-
+        buffer[head] = val;
+        head = (head + 1) % capacity;
+        if (size == capacity) {
+            tail = (tail + 1) % capacity;
+        } else {
+            size++;
+        }
     }
 
     /**
@@ -39,7 +54,7 @@ public class CircularBuffer {
      */
     public int get() {
 
-        return -1;
+        return buffer[tail];
     }
 
     /**
@@ -49,7 +64,8 @@ public class CircularBuffer {
      */
     public boolean isFull() {
 
-        return false;
+
+        return this.size==this.capacity;
     }
 
     /**
@@ -59,7 +75,7 @@ public class CircularBuffer {
      */
     public boolean isEmpty() {
 
-        return false;
+        return this.size==0;
     }
 
     public static void main(String[] args) {

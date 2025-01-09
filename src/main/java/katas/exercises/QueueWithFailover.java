@@ -1,5 +1,6 @@
 package katas.exercises;
 
+import java.sql.Time;
 import java.util.*;
 
 public class QueueWithFailover {
@@ -36,7 +37,10 @@ public class QueueWithFailover {
          *
          * @return boolean: True if the job queue is empty, False otherwise.
          */
-        throw new UnsupportedOperationException("Not implemented yet.");
+
+        return jobs.isEmpty();
+
+
     }
 
     public void sendJob(String job) {
@@ -45,7 +49,7 @@ public class QueueWithFailover {
          *
          * @param job The job to be added to the queue.
          */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        jobs.add(job);
     }
 
     public String getJob() throws EmptyQueueException {
@@ -55,10 +59,17 @@ public class QueueWithFailover {
          * @return String: The job at the front of the queue.
          * @throws EmptyQueueException: If the job queue is empty.
          */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        String job = jobs.remove();
+        if (job!=null){
+            long timeadded = System.currentTimeMillis();
+            hiddenJobs.put(job,timeadded);
+            return job;
+        }else {
+            throw new EmptyQueueException("job queue is empty");
+        }
     }
 
-    public void jobDone(String job) {
+    public void jobDone(String job) throws  IllegalArgumentException{
         /**
          * This function is called when a consumer completes a consumed job.
          * The job should be deleted permanently (from the hidden).
@@ -66,7 +77,13 @@ public class QueueWithFailover {
          * @param job The job to be deleted permanently from the queue.
          * @throws IllegalArgumentException: If the job is not found in the hidden jobs.
          */
-        throw new UnsupportedOperationException("Not implemented yet.");
+
+        if (hiddenJobs.containsKey(job)){
+            hiddenJobs.remove(job);
+        }else{
+            throw new  IllegalArgumentException("job is not found in the hidden jobs");
+        }
+
     }
 
     public int size() {
@@ -75,7 +92,8 @@ public class QueueWithFailover {
          *
          * @return int: The number of jobs in the queue.
          */
-        throw new UnsupportedOperationException("Not implemented yet.");
+
+        return jobs.size();
     }
 
     public int inFlightSize() {
@@ -84,14 +102,20 @@ public class QueueWithFailover {
          *
          * @return int: The number of hidden jobs in the queue.
          */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return hiddenJobs.size();
     }
 
     public void returnExpiredJobsToQueue() {
         /**
          * Return hidden jobs that were retrieved more than `jobTimeout` seconds ago back to the job queue.
          */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        long currentTime = System.currentTimeMillis();
+        for (String key:hiddenJobs.keySet()){
+            if (currentTime-hiddenJobs.get(key)>this.jobTimeout){
+                hiddenJobs.remove(key);
+                jobs.add(key);
+            }
+        }
     }
 
     public static void main(String[] args) {

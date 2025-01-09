@@ -2,6 +2,9 @@ package katas.exercises;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+
 
 public class URLShortener {
     /**
@@ -17,6 +20,7 @@ public class URLShortener {
 
     private Map<String, String> urlMap;
     private static final String BASE_URL = "http://short.ly/";
+    private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     /**
      * Constructor to initialize the URL shortener system.
@@ -33,7 +37,23 @@ public class URLShortener {
      */
     public String shorten(String longUrl) {
         // Implement logic to shorten the URL
-        return null;
+        for (String key:urlMap.keySet()){
+            if (Objects.equals(urlMap.get(key), longUrl)){
+                return key;
+            }
+        }
+        String shortUrl= new String(BASE_URL);
+        Random random = new Random();
+        do {
+            StringBuilder shortURL = new StringBuilder();
+            for (int i = 0; i < 6; i++) {
+                shortURL.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
+            }
+
+        }while (urlMap.containsKey(shortUrl));
+        urlMap.put(shortUrl,longUrl);
+
+        return shortUrl;
     }
 
     /**
