@@ -20,8 +20,32 @@ package katas.exercises;
  */
 public class KthSmallestElementInBST {
 
+    private static int count = 0;
+    private static int result = -1;
+
     public static int kthSmallest(TreeNode root, int k) {
-        return -1;
+        inorder(root, k);
+        count = 0;
+        return result;
+    }
+
+    private static void inorder(TreeNode node, int k) {
+        if (node == null || count >= k) {
+            return;
+        }
+
+        // Traverse the left subtree
+        inorder(node.left, k);
+
+        // Visit the current node
+        count++;
+        if (count == k) {
+            result = node.val;
+            return;
+        }
+
+        // Traverse the right subtree
+        inorder(node.right, k);
     }
 
     public static void main(String[] args) {

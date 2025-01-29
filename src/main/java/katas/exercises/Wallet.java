@@ -32,7 +32,13 @@ public class Wallet {
      * @return the total value of the wallet in the specified currency
      */
     public double value(Currency currency, RateProvider rateProvider) {
-        return 0;
+        double val =0;
+        for (Stock s:stocks){
+            double addedvalue = s.getQuantity()*rateProvider.rate(s.getType(),currency);
+            val+= addedvalue;
+
+        }
+        return val;
     }
 
     public static void main(String[] args) {

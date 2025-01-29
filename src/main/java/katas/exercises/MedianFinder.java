@@ -1,5 +1,7 @@
 package katas.exercises;
 
+import java.util.PriorityQueue;
+
 /**
  * find the median of a stream of integers.
  *
@@ -13,30 +15,41 @@ package katas.exercises;
  */
 public class MedianFinder {
 
-    /**
-     * Initializes the MedianFinder object.
-     */
+    private PriorityQueue<Integer> minheap;
+    private PriorityQueue<Integer> maxheap;
+
+
     public MedianFinder() {
-
+        minheap = new PriorityQueue<>();
+        maxheap = new PriorityQueue<>((a, b) -> b - a);
     }
 
-    /**
-     * Adds a number to the data stream.
-     *
-     * @param num the number to be added
-     */
+
     public void addNum(int num) {
+        if(maxheap.isEmpty() || num <= maxheap.peek()){
+            maxheap.add(num);
+        }else {
+            minheap.add(num);
+        }
 
+        if(maxheap.size() > minheap.size() + 1){
+            minheap.add(maxheap.poll());
+        } else if (minheap.size() > maxheap.size()) {
+            maxheap.add(minheap.poll());
+        }
     }
 
-    /**
-     * Finds and returns the median of the data stream.
-     *
-     * @return the median as a double
-     */
     public double findMedian() {
-
-        return 0.0;
+        if(minheap.isEmpty() && maxheap.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+        else if (minheap.size() == maxheap.size()) {
+            return ((double) minheap.peek() + maxheap.peek()) / 2.0;
+        } else if (maxheap.size() > minheap.size()) {
+            return maxheap.peek();
+        } else {
+            return minheap.peek();
+        }
     }
 
     public static void main(String[] args) {

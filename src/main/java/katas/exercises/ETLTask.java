@@ -77,9 +77,39 @@ public class ETLTask {
 
             // Extract data from source database
             ResultSet rs = sourceStmt.executeQuery("SELECT * FROM users");
+            while (rs.next()){
+                int user_id = rs.getInt("id");
+                String full_name = rs.getString("name");
+                String email = rs.getString("email");
+                String age = rs.getString("age");
+                String ageGroup;
+                if (Integer.parseInt(age)<30){
+                     ageGroup = "for users aged less than 30";
+                }else if (Integer.parseInt(age)<60){
+                     ageGroup = "for users aged 30 to 60";
+                }else {
+                    ageGroup = "for users aged over 60";
+                }
+
+                String date = rs.getString("registration_date");
+                String dateYear = String.valueOf(date.charAt(0)) + String.valueOf(date.charAt(1))+String.valueOf(date.charAt(2))+String.valueOf(date.charAt(3));
+                int yearsRegistered = 2025-Integer.parseInt(dateYear);
+
+                String insertQuery = "INSERT INTO transformed_users (user_id, full_name, email, age_group, years_registered) VALUES (?, ?, ?, ?, ?)";
+                try (PreparedStatement pstmt = targetConn.prepareStatement(insertQuery)) {
+                    pstmt.setInt(1, user_id);
+                    pstmt.setString(2, full_name);
+                    pstmt.setString(3, email);
+                    pstmt.setString(4, ageGroup);
+                    pstmt.setInt(5, yearsRegistered);
+                    pstmt.executeUpdate();
+                }
 
 
-            // TODO ....
+            }
+
+        }catch (Exception e) {
+            System.err.println("Error processing row: " + e.getMessage());
         }
     }
 
